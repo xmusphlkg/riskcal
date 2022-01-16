@@ -1,0 +1,51 @@
+---
+title: "about"
+output: html_document
+---
+
+
+<b> 原始模式 </b>
+
+- $\mathit{p_{si}}$ ：在 $i$ 天， $s$ 地的 百度迁徙人口来源/迁出人口量占当天总量的百分比。
+
+- $\mathit{r_{i}}$ ： $i$ 天的百度迁徙规模指数。
+
+- $b$ ： 时间 $i$ 的上限
+
+- $a$ ： 迁徙人口来源地/迁出人口目的地数量 $s$ 
+
+- 风险比： $\mathit{R_s}  = \frac{\sum_{i=1}^b \mathit{p_{si} r_i}}{\sum_{s=1}^a( \sum_{i=1}^b \mathit{p_{si} r_i})}$
+
+<b> 基本模式 </b>
+
+- $\mathit{p_{si}}$ ：在 $i$ 天， $s$ 地的 百度迁徙人口来源/迁出人口量占当天总量的百分比。
+
+- $\mathit{r_{i}}$ ： $i$ 天的百度迁徙规模指数。
+
+- $\mathit{n_{i}}$ ：在 $i$ 天，新报告病例。
+
+- $b$ ： 时间 $i$ 的上限
+
+- $a$ ： 迁徙人口来源地/迁出人口目的地数量 $s$ 
+
+- 风险比： $\mathit{R_s}  = \frac{\sum_{i=1}^b \mathit{p_{si} n_i r_i}}{\sum_{s=1}^a( \sum_{i=1}^b \mathit{p_{si} n_i r_i})}$
+
+<b> 高级模式 </b>
+
+- $\mathit{p_{si}}$ ：在 $i$ 天， $s$ 地的 百度迁徙人口来源/迁出人口量占当天总量的百分比。
+
+- $\mathit{r_{i}}$ ： $i$ 天的百度迁徙规模指数。
+
+- $\mathit{n_{i}}$ ：在 $i$ 天，未隔离病例数。
+
+- $b$ ： 时间 $i$ 的上限
+
+- $a$ ： 迁徙人口来源地/迁出人口目的地数量 $s$ 
+
+
+<!-- - $\mathit{O_{\alpha}}$ ：病例 $\alpha$ 发病日期。 -->
+
+<!-- - $\mathit{I_{\alpha}}$ ：病例 $\alpha$ 隔离日期。 -->
+
+- 风险比： $\mathit{R_s}  = \frac{\sum_{i=1}^b \mathit{p_{si} n_i r_i}}{\sum_{s=1}^a( \sum_{i=1}^b \mathit{p_{si} n_i r_i})}$
+

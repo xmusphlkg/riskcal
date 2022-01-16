@@ -1,0 +1,101 @@
+library(shiny)
+
+navbarPage(
+    title = "溢出风险评价",
+    header = tagList(
+        useShinydashboard(),
+        setBackgroundColor(color = c("ghostwhite"))
+    ), 
+    inverse = TRUE,
+    theme = shinythemes::shinytheme(theme = "flatly"), 
+    
+    tabPanel(
+        title = "Home",
+        fluidRow(
+            column(
+                width = 4,
+                box(title = '设置',
+                    width = 12,
+                    status = "primary",
+                    pickerInput(
+                        inputId = "select_province", 
+                        label = "省份",
+                        width = NULL, 
+                        options = list(
+                            style = "btn-success",
+                            size = 10
+                        ),
+                        multiple = FALSE,
+                        choices = pccode$name,
+                        selected = '北京'
+                    ),
+                    pickerInput(
+                        inputId = "select_city", 
+                        label = "城市",
+                        width = NULL, 
+                        options = list(
+                            style = "btn-success"
+                        ),
+                        multiple = FALSE,
+                        choices = NULL
+                    ),
+                    pickerInput(
+                        inputId = "select_direct", 
+                        label = "方向",
+                        width = NULL, 
+                        options = list(
+                            style = "btn-success"
+                        ),
+                        multiple = FALSE,
+                        choices = c("迁入" = "move_in", "迁出" = "move_out")
+                    ),
+                    dateRangeInput(
+                        inputId = "select_date",
+                        label = "查询日期",
+                        start = Sys.Date()-30,
+                        end = Sys.Date()-1,
+                        max = Sys.Date()-1,
+                        format = "yyyy/mm/dd"
+                    ),
+                    column(
+                        width = 12,
+                        rHandsontableOutput("datatable", height = '250px')
+                        ),
+                    column(
+                        width = 12,
+                        actionButton(
+                        inputId = "confirmed",
+                        label = "开始查询"
+                    )))
+            ),
+            column(width = 4,
+                    box(title = "风险评估",
+                        width = 12,
+                        status = "warning",
+                        plotlyOutput(outputId = 'risk_plot', height = '600px', width = '100%'))
+            ),
+            column( width = 4,
+                    box(title = "数据分布(测试)",
+                        status = 'info',
+                        plotOutput(outputId = 'map_plot', height = '600px', width = '100%'),
+                        width = 12)
+            )
+            
+        )
+    ),
+    tabPanel(
+        title = "关于",
+        fluidRow(
+            column(
+                width = 8, offset = 2,
+                box(
+                    # title = "数据来源", status = "primary", width = NULL,
+                    "数据来源——百度迁徙"
+                )
+            )
+            
+        )
+    )
+    
+)
+
