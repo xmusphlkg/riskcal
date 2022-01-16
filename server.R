@@ -1,5 +1,7 @@
 function(input, output, session) {
   
+  observe_helpers(withMathJax = TRUE)
+  
   values <- reactiveValues(df_combind = NULL)
   
   observeEvent(input$cname,{
@@ -57,7 +59,7 @@ function(input, output, session) {
     updatePickerInput(
       session = session,
       inputId = "select_city",
-      label = "城市",
+      label = "疫源地(城市)",
       options = list(
         style = "btn-success",
         title = "请选择城市",

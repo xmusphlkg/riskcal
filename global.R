@@ -30,3 +30,7 @@ load('data/source.RData')
 # map_data<-st_read("data/province/province.shp")[,c('NAME', 'geometry')]
 # ## 国界
 # border_data<-st_read("data/province/border.shp")[,c('geometry')]
+
+## 20220116
+
+library(shinyhelper)
