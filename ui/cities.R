@@ -50,17 +50,25 @@ page_cities <- dashboardPage(
               column(width = 4,
                      actionBttn(
                        inputId = "addButton",
-                       color = 'danger',
                        icon = icon("plus"),
-                       size = 'md',
-                       label = "疫源地",
-                       style = 'unite')),
+                       style = 'simple',
+                       color = 'primary',
+                       label = "加疫源地")),
               column(width = 4,
                      actionBttn(
                        inputId = "confirmed_cities",
-                       size = 'md',
                        label = "风险计算",
-                       style = 'unite'))
+                       style = 'simple',
+                       color = 'primary',
+                       icon = icon('power-off'))),
+              column(width = 4,
+                     actionBttn(
+                       inputId = 'cities_risk_down',
+                       label = '下载结果',
+                       style = 'simple',
+                       color = 'primary',
+                       icon = icon('download'))
+                     )
             )
           ),
           box(title = p('疫源地',
@@ -87,7 +95,17 @@ page_cities <- dashboardPage(
                  uiOutput('source_boxs'))
           )
         )
-      )
+      ),
+      column(width = 12,
+             box(title = "风险评估",
+                 width = 4,
+                 status = "warning",
+                 plotlyOutput(outputId = 'cities_risk', height = '600px', width = '100%')),
+             box(title = "迁徙规模指数变化",
+                 status = 'info',
+                 width = 8,
+                 plotlyOutput(outputId = 'baidu_index_plot_cities', height = '300px', width = '100%')
+             ))
     )
   )
 )

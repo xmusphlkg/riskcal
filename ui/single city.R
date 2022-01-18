@@ -82,18 +82,29 @@ page_single_city <- dashboardPage(
                 collapsed = F,
                 rHandsontableOutput("datatable", height = '200px')
             ),
-            column(
-              width = 12,
-              actionBttn(
-                inputId = "confirmed",
-                style = 'unite',
-                size = 'md',
-                label = "风险计算"),
-              actionBttn(
-                inputId = "confirmed_map",
-                style = 'unite',
-                size = 'md',
-                label = "地图绘制")
+            column(width = 4,
+                   actionBttn(
+                     inputId = "confirmed",
+                     style = 'simple',
+                     color = 'primary',
+                     label = "风险计算",
+                     icon = icon('power-off'))
+                   ),
+            column(width = 4,
+                   actionBttn(
+                     inputId = "confirmed_map",
+                     style = 'simple',
+                     color = 'primary',
+                     icon = icon('globe-asia'),
+                     label = "地图绘制")
+                   ),
+            column(width = 4,
+                   actionBttn(
+                     inputId = "risk_down",
+                     style = 'simple',
+                     color = 'primary',
+                     icon = icon('download'),
+                     label = "下载结果")
             )
         )
       ),
@@ -102,42 +113,27 @@ page_single_city <- dashboardPage(
                     box(title = "风险评估",
                         width = 12,
                         status = "warning",
-                        plotlyOutput(outputId = 'risk_plot', height = '600px', width = '100%'),
-                        downloadBttn('download_bar', 
-                                     '结果下载(html)',
-                                     style = 'fill',
-                                     size = 'sm'),
-                        downloadBttn('download_data', 
-                                     '数据下载(csv)',
-                                     style = 'fill',
-                                     size = 'sm'))
+                        plotlyOutput(outputId = 'risk_plot', height = '600px', width = '100%')
+                        )
              ),
              column(width = 6,
                     box(title = "数据分布(测试)",
                         status = 'info',
                         plotOutput(outputId = 'map_plot', height = '600px', width = '100%'),
-                        downloadBttn('download_map',
-                                     '结果下载(png)',
-                                     style = 'fill',
-                                     size = 'sm'),
-                        downloadBttn('download_map_pdf',
-                                     '结果下载(pdf)',
-                                     style = 'fill',
-                                     size = 'sm'),
                         width = 12)
              ),
              column(width = 12,
                     box(title = " 迁徙规模指数变化",
                         status = 'info',
                         plotlyOutput(outputId = 'baidu_index_plot', height = '300px', width = '100%'),
-                        downloadBttn('download_baidu_curve',
-                                     '结果下载(html)',
-                                     style = 'fill',
-                                     size = 'sm'),
-                        downloadBttn('download_baidu_data',
-                                     '数据下载(csv)',
-                                     style = 'fill',
-                                     size = 'sm'),
+                        # downloadBttn('download_baidu_curve',
+                        #              '结果下载(html)',
+                        #              style = 'fill',
+                        #              size = 'sm'),
+                        # downloadBttn('download_baidu_data',
+                        #              '数据下载(csv)',
+                        #              style = 'fill',
+                        #              size = 'sm'),
                         width = 12)
              ))
       

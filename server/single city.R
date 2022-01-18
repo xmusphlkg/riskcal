@@ -118,15 +118,15 @@ observeEvent(input$confirmed, {
                    })
                    
                    
-                   output$download_baidu_curve <- downloadHandler(
-                     filename = function(){'risk_index.html'},
-                     content = function(file){
-                       htmlwidgets::saveWidget(as_widget(index_curve()), file)
-                     }
-                   )
+                   # output$download_baidu_curve <- downloadHandler(
+                   #   filename = function(){'risk_index.html'},
+                   #   content = function(file){
+                   #     htmlwidgets::saveWidget(as_widget(index_curve()), file)
+                   #   }
+                   # )
                    
                    output$download_baidu_data <- downloadHandler(
-                     filename = function(){'risk_index.csv'},
+                     filename = 'risk_index.csv',
                      content = function(file){
                        write.csv(df_history_all, file, row.names = FALSE)
                      }
@@ -154,6 +154,10 @@ observeEvent(input$confirmed, {
                      ### input cases
                      DF <- hot_to_r(input$datatable_risk)
                      names(DF) <- c('n', 'onset_date', 'isolate_date')
+                     
+                     DF <- DF %>% 
+                       mutate_if(is.character, as.Date)
+                     
                      # print(DF)
                      date_count <- lapply(1:nrow(DF), function(i){
                        date_count <- seq(from = DF[i,'onset_date'], to = DF[i,'isolate_date'], by = "days")
@@ -168,6 +172,7 @@ observeEvent(input$confirmed, {
                        mutate(case_number = sum(case_number)) %>% 
                        ungroup() %>% 
                        distinct() %>% 
+                       mutate_if(is.character, as.Date) %>% 
                        complete(date = seq.Date(                              # ensure all dates are represented
                          from = input$select_date[1],
                          to =input$select_date[2],
@@ -200,7 +205,8 @@ observeEvent(input$confirmed, {
                      # print(DF)
                      
                      date_count <- DF %>% 
-                       distinct() %>% 
+                       distinct() %>%
+                       mutate_if(is.character, as.Date) %>% 
                        complete(date = seq.Date(                              # ensure all dates are represented
                          from = input$select_date[1],
                          to =input$select_date[2],
@@ -335,15 +341,15 @@ observeEvent(input$confirmed_map, {
                    })
                    
                    
-                   output$download_baidu_curve <- downloadHandler(
-                     filename = function(){'risk_index.html'},
-                     content = function(file){
-                       htmlwidgets::saveWidget(as_widget(index_curve()), file)
-                     }
-                   )
+                   # output$download_baidu_curve <- downloadHandler(
+                   #   filename = function(){'risk_index.html'},
+                   #   content = function(file){
+                   #     htmlwidgets::saveWidget(as_widget(index_curve()), file)
+                   #   }
+                   # )
                    
                    output$download_baidu_data <- downloadHandler(
-                     filename = function(){'risk_index.csv'},
+                     filename = 'risk_index.csv',
                      content = function(file){
                        write.csv(df_history_all, file, row.names = FALSE)
                      }
@@ -365,6 +371,10 @@ observeEvent(input$confirmed_map, {
                      ### input cases
                      DF <- hot_to_r(input$datatable_risk)
                      names(DF) <- c('n', 'onset_date', 'isolate_date')
+                     
+                     DF <- DF %>% 
+                       mutate_if(is.character, as.Date)
+                     
                      # print(DF)
                      date_count <- lapply(1:nrow(DF), function(i){
                        date_count <- seq(from = DF[i,'onset_date'], to = DF[i,'isolate_date'], by = "days")
@@ -379,6 +389,7 @@ observeEvent(input$confirmed_map, {
                        mutate(case_number = sum(case_number)) %>% 
                        ungroup() %>% 
                        distinct() %>% 
+                       mutate_if(is.character, as.Date) %>% 
                        complete(date = seq.Date(                              # ensure all dates are represented
                          from = input$select_date[1],
                          to =input$select_date[2],
@@ -412,6 +423,7 @@ observeEvent(input$confirmed_map, {
                      
                      date_count <- DF %>% 
                        distinct() %>% 
+                       mutate_if(is.character, as.Date) %>% 
                        complete(date = seq.Date(                              # ensure all dates are represented
                          from = input$select_date[1],
                          to =input$select_date[2],
@@ -548,19 +560,164 @@ observeEvent(input$confirmed_map, {
                  incProgress(1/10, detail = paste('服务器处理完成'))
                  
                  output$download_map <- downloadHandler(
-                   filename = 'risk_map.png',
+                   filename =  paste0("ctmodelling_toobox", Sys.Date(), ".png"),
                    content = function(file) {
                      ggsave(file, plot = plot_map, device = 'png')
                    }
                  )
-                 output$download_map_pdf <- downloadHandler(
-                   filename = 'risk_map.pdf',
+                 output$download_mapplot_tiff <- downloadHandler(
+                   filename =  paste0("ctmodelling_toobox", Sys.Date(), ".tiff"),
                    content = function(file) {
-                     pdf(file)
+                     grDevices::tiff(file, bg = "transparent")
                      print(plot_map)
                      dev.off()
+                     # ggsave(file, plot = plot_map, device = 'tiff')
+                   }
+                 )
+                 output$download_map_pdf <- downloadHandler(
+                   filename =  paste0("ctmodelling_toobox", Sys.Date(), ".pdf"),
+                   content = function(file) {
+                     ggsave(file, plot = plot_map, device = cairo_pdf)
                    }
                  )
                })
   
+})
+
+
+observeEvent(input$risk_down,{
+  if (!is.null(values$df_combind)){
+    showModal(
+      modalDialog(
+        fluidRow(
+          column(
+            width = 12,
+            align = "center",
+            downloadButton(
+              "download_bar",
+              "下载风险计算结果(html)",
+              icon = icon("file-code"),
+              class = 'butt'
+            )
+          )
+        ),
+        br(),
+        # fluidRow(
+        #   column(
+        #     width = 12,
+        #     align = "center",
+        #     downloadButton(
+        #       "download_riskcal_png",
+        #       "下载风险计算结果(png)",
+        #       icon = icon("file-image"),
+        #       class = 'butt'
+        #     )
+        #   )
+        # ),
+        # br(),
+        # fluidRow(
+        #   column(
+        #     width = 12,
+        #     align = "center",
+        #     downloadButton(
+        #       "download_riskcal_tiff",
+        #       "下载风险计算结果(tiff)",
+        #       icon = icon("file-image"),
+        #       class = 'butt'
+        #     )
+        #   )
+        # ),
+        # br(),
+        # fluidRow(
+        #   column(
+        #     width = 12,
+        #     align = "center",
+        #     downloadButton(
+        #       "download_riskcal_pdf",
+        #       "下载风险计算结果(pdf)",
+        #       icon = icon("file-pdf"),
+        #       class = 'butt'
+        #     )
+        #   )
+        # ),
+        # br(),
+        fluidRow(
+          column(
+            width = 12,
+            align = "center",
+            downloadButton(
+              "download_data",
+              "下载风险计算数据(csv)",
+              icon = icon("file-excel"),
+              class = 'butt'
+            )
+          )
+        ),
+        hr(),
+        fluidRow(
+          column(
+            width = 12,
+            align = "center",
+            downloadButton(
+              "download_baidu_data",
+              "下载迁出人流数据(csv)",
+              icon = icon("file-excel"),
+              class = 'butt'
+            )
+          )
+        ),
+        hr(),
+        fluidRow(
+          column(
+            width = 12,
+            align = "center",
+            downloadButton(
+              "download_map",
+              "下载地图(png)",
+              icon = icon("file-image"),
+              class = 'butt'
+            )
+          )
+        ),
+        br(),
+        fluidRow(
+          column(
+            width = 12,
+            align = "center",
+            downloadButton(
+              "download_mapplot_tiff",
+              "下载地图(tiff)",
+              icon = icon("file-image"),
+              class = 'butt'
+            )
+          )
+        ),
+        br(),
+        fluidRow(
+          column(
+            width = 12,
+            align = "center",
+            downloadButton(
+              "download_map_pdf",
+              "下载地图(pdf)",
+              icon = icon("file-pdf"),
+              class = 'butt'
+            )
+          )
+        ),
+        title = "下载",
+        size = "s",
+        footer = list(
+          modalButton("取消")
+        )
+      )
+    )
+    
+  } else {
+    shinyalert(title = '没找到数据',
+               type = 'error',
+               timer = 5000, 
+               HTML('请点击“风险计算”按钮并出现流行曲线后再试~')
+    )
+  }
 })
