@@ -42,28 +42,41 @@ observeEvent(input$version_select,{
   
   if(input$version_select == 'max'){
     output$datatable_risk <- renderRHandsontable({
+      # DF <- data.frame(
+      #   数量 = sample(x = 1:10, size = 5, replace = TRUE),
+      #   发病日期 = format(seq(from = Sys.Date()-10, by = "days", length.out = 5),
+      #                 '%Y/%m/%d'),
+      #   隔离日期 = format(seq(from = Sys.Date()-5, by = "days", length.out = 5),
+      #                 '%Y/%m/%d')
+      # )
       DF <- data.frame(
         数量 = sample(x = 1:10, size = 5, replace = TRUE),
-        发病日期 = format(seq(from = Sys.Date()-10, by = "days", length.out = 5),
-                      '%Y/%m/%d'),
-        隔离日期 = format(seq(from = Sys.Date()-5, by = "days", length.out = 5),
-                      '%Y/%m/%d')
+        发病日期 = seq(from = Sys.Date()-10, by = "days", length.out = 5),
+        隔离日期 = seq(from = Sys.Date()-5, by = "days", length.out = 5)
       )
       rhandsontable(DF, language = 'zh-CN') %>% 
         hot_context_menu(allowColEdit = FALSE, allowRowEdit = TRUE) %>% 
-        hot_col(c("发病日期", "隔离日期"), dateFormat = "YYYY/MM/DD", type = "date",
+        hot_col(c("发病日期", "隔离日期"),
+                # dateFormat = "YYYY/MM/DD",
+                type = "date",
                 language = 'zh-CN')
     })
   } else if(input$version_select == 'base'){
     output$datatable_risk <- renderRHandsontable({
+      # DF <- data.frame(
+      #   数量 = sample(x = 1:10, size = 5, replace = TRUE),
+      #   报告日期 = format(seq(from = Sys.Date()-6, by = "days", length.out = 5),
+      #                 '%Y/%m/%d')
+      # )
       DF <- data.frame(
         数量 = sample(x = 1:10, size = 5, replace = TRUE),
-        报告日期 = format(seq(from = Sys.Date()-6, by = "days", length.out = 5),
-                      '%Y/%m/%d')
+        报告日期 = seq(from = Sys.Date()-6, by = "days", length.out = 5)
       )
       rhandsontable(DF, language = 'zh-CN') %>% 
         hot_context_menu(allowColEdit = FALSE, allowRowEdit = TRUE)%>% 
-        hot_col("报告日期", dateFormat = "YYYY/MM/DD", type = "date",
+        hot_col("报告日期", 
+                # dateFormat = "YYYY/MM/DD",
+                type = "date",
                 language = 'zh-CN')
     })
   } else if(input$version_select == 'pri'){

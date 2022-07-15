@@ -10,7 +10,7 @@ mobility_get <- function(area_id, direction, date_input){
   
   url <- paste0(
     'http://huiyan.baidu.com/migration/cityrank.jsonp?dt=', class_name,
-    '&id=', area_id,
+    '&id=', as.integer(area_id),
     "&type=", direction,
     "&date=", date_input
   )
@@ -58,7 +58,7 @@ his_mobility <- function(area_id, direction){
   
   url <- paste0(
     "https://huiyan.baidu.com/migration/historycurve.jsonp?dt=", class_name,
-    "&id=", area_id,
+    "&id=",as.integer(area_id),
     "&type=", direction
   )
   

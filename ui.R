@@ -12,7 +12,7 @@ navbarPage(
     tags$script(src="http://pv.sohu.com/cityjson?ie=utf-8"),
     tags$script('$( document ).on("shiny:sessioninitialized", function(event) {Shiny.setInputValue("cname",returnCitySN["cname"]);});'),  
     useShinyalert(force = TRUE),
-    # includeHTML('function/googleanalytics.html')
+    includeHTML('function/googleanalytics.html')
   ), 
   inverse = TRUE,
   theme = shinythemes::shinytheme(theme = "flatly"), 
